@@ -1,4 +1,3 @@
-import 'package:android_dev_test/second_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +15,10 @@ class ThirdScreen extends StatelessWidget {
       ),
       child: SafeArea(
         child: CupertinoScrollbar(
-          child: ListView(
-            children: [
-              CupertinoListTile(
+          child: ListView.builder(
+            itemCount: 3,
+            itemBuilder: (BuildContext context, int index) {
+              return CupertinoListTile(
                 leading: Image.asset(
                   "assets/background.png",
                   width: 100,
@@ -28,12 +28,12 @@ class ThirdScreen extends StatelessWidget {
                 subtitle: "sub",
                 trailing: Text('trailing'),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return SecondScreen();
-                  }));
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  //   return SecondScreen();
+                  // }));
                 },
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
@@ -64,9 +64,9 @@ class CupertinoListTile extends StatefulWidget {
 class _StatefulStateCupertino extends State<CupertinoListTile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GestureDetector(
-        onTap: widget.onTap,
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
