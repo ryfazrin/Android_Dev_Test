@@ -2,12 +2,32 @@ import 'package:android_dev_test/third_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SecondScreen extends StatelessWidget {
+class SecondScreen extends StatefulWidget {
   final String username;
   const SecondScreen({Key? key, required this.username}) : super(key: key);
 
   @override
+  State<SecondScreen> createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  String? user;
+
+  @override
   Widget build(BuildContext context) {
+    void _navigateAndDisplaySelection(BuildContext context) async {
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ThirdScreen()),
+      );
+
+      setState(() {
+        user = result;
+      });
+    }
+
+    print(user);
+
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text(
@@ -33,7 +53,7 @@ class SecondScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      username,
+                      widget.username,
                       style: CupertinoTheme.of(context)
                           .textTheme
                           .navTitleTextStyle,
@@ -43,7 +63,7 @@ class SecondScreen extends StatelessWidget {
               ),
               Center(
                 child: Text(
-                  "Selected User Name",
+                  user != null ? user! : "Selected User Name",
                   style: CupertinoTheme.of(context)
                       .textTheme
                       .navLargeTitleTextStyle,
@@ -54,10 +74,7 @@ class SecondScreen extends StatelessWidget {
                 child: CupertinoButton.filled(
                   borderRadius: BorderRadius.all(Radius.circular(12.0)),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return ThirdScreen();
-                    }));
+                    _navigateAndDisplaySelection(context);
                   },
                   child: Text("Choose a User"),
                 ),

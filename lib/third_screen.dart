@@ -38,9 +38,8 @@ class ThirdScreen extends StatelessWidget {
                       subtitle: user.email,
                       trailing: Text('trailing'),
                       onTap: () {
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        //   return SecondScreen();
-                        // }));
+                        Navigator.pop(
+                            context, '${user.firstName} ${user.lastName}');
                       },
                     );
                   },
