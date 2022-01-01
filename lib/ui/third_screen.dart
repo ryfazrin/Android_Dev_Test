@@ -1,5 +1,6 @@
 import 'package:android_dev_test/api/api_service.dart';
 import 'package:android_dev_test/provider/users_provider.dart';
+import 'package:android_dev_test/widgets/cupertino_list_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,23 +11,22 @@ class ThirdScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text(
-          'Third Screen',
-        ),
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Third Screen'),
       ),
       child: ChangeNotifierProvider<UsersProvider>(
         create: (_) => UsersProvider(apiService: ApiService()),
         child: SafeArea(
           child: Consumer<UsersProvider>(builder: (context, state, _) {
             if (state.state == ResultState.Loading) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (state.state == ResultState.HasData) {
               return CustomScrollView(
                 slivers: [
                   CupertinoSliverRefreshControl(
                     onRefresh: () async {
-                      await Future<void>.delayed(Duration(milliseconds: 1000));
+                      await Future<void>.delayed(
+                          const Duration(milliseconds: 1000));
                     },
                   ),
                   // padding: const EdgeInsets.symmetric(
@@ -61,64 +61,9 @@ class ThirdScreen extends StatelessWidget {
             } else if (state.state == ResultState.Error) {
               return Center(child: Text(state.message));
             } else {
-              return Center(child: Text(''));
+              return const Center(child: Text(''));
             }
           }),
-        ),
-      ),
-    );
-  }
-}
-
-class CupertinoListTile extends StatefulWidget {
-  final Widget leading;
-  final String title;
-  final String subtitle;
-  final Function() onTap;
-
-  const CupertinoListTile(
-      {Key? key,
-      required this.leading,
-      required this.title,
-      required this.subtitle,
-      required this.onTap})
-      : super(key: key);
-
-  @override
-  _StatefulStateCupertino createState() => _StatefulStateCupertino();
-}
-
-class _StatefulStateCupertino extends State<CupertinoListTile> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: Container(
-        padding: EdgeInsets.all(18.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                widget.leading,
-                SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(widget.title,
-                        style: TextStyle(
-                          fontSize: 16,
-                        )),
-                    Text(widget.subtitle,
-                        style: TextStyle(
-                          color: CupertinoColors.systemGrey,
-                          fontSize: 16,
-                        )),
-                  ],
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );

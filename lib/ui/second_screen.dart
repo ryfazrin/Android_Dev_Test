@@ -26,14 +26,9 @@ class _SecondScreenState extends State<SecondScreen> {
       });
     }
 
-    print(user);
-
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text(
-          'Second Screen',
-          // style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
-        ),
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Second Screen'),
       ),
       child: SafeArea(
         child: Padding(
@@ -42,24 +37,21 @@ class _SecondScreenState extends State<SecondScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Welcome",
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Welcome",
+                    style: TextStyle(
+                      fontSize: 12,
                     ),
-                    Text(
-                      widget.username,
-                      style: CupertinoTheme.of(context)
-                          .textTheme
-                          .navTitleTextStyle,
-                    ),
-                  ],
-                ),
+                  ),
+                  Text(
+                    widget.username,
+                    style:
+                        CupertinoTheme.of(context).textTheme.navTitleTextStyle,
+                  ),
+                ],
               ),
               Center(
                 child: Text(
@@ -72,11 +64,11 @@ class _SecondScreenState extends State<SecondScreen> {
               SizedBox(
                 width: double.infinity,
                 child: CupertinoButton.filled(
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                   onPressed: () {
                     _navigateAndDisplaySelection(context);
                   },
-                  child: Text("Choose a User"),
+                  child: const Text("Choose a User"),
                 ),
               ),
             ],

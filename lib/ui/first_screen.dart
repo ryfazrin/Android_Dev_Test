@@ -31,15 +31,16 @@ class _FirstScreenState extends State<FirstScreen> {
     bool checkPalindrome(String inputString) {
       String textFilter = inputString.replaceAll(' ', '');
       for (int i = 0; i < textFilter.length ~/ 2; i++) {
-        if (textFilter[i] != textFilter[textFilter.length - i - 1])
+        if (textFilter[i] != textFilter[textFilter.length - i - 1]) {
           return false;
+        }
       }
       return true;
     }
 
     return CupertinoPageScaffold(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/background.png"),
             fit: BoxFit.cover,
@@ -52,50 +53,50 @@ class _FirstScreenState extends State<FirstScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset("assets/btn_add_photo.png", width: 116),
-                SizedBox(height: 58.0),
+                const SizedBox(height: 58.0),
                 CupertinoTextField(
                   controller: nameController,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: CupertinoColors.white,
                     borderRadius: BorderRadius.all(Radius.circular(12.0)),
                   ),
                   placeholder: "Name",
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 7.94,
                     bottom: 7.94,
                     left: 20,
                     right: 16,
                   ),
                 ),
-                SizedBox(height: 22.0),
+                const SizedBox(height: 22.0),
                 CupertinoTextField(
                   controller: palindromeController,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: CupertinoColors.white,
                     borderRadius: BorderRadius.all(Radius.circular(12.0)),
                   ),
                   placeholder: "Palindrome",
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 7.94,
                     bottom: 7.94,
                     left: 20,
                     right: 16,
                   ),
                 ),
-                SizedBox(height: 45.0),
+                const SizedBox(height: 45.0),
                 SizedBox(
                   width: double.infinity,
                   child: CupertinoButton.filled(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    child: Text("CHECK"),
+                    borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                    child: const Text("CHECK"),
                     onPressed: () {
                       if (nameController.text.isEmpty) {
                         showCupertinoDialog(
                             context: context,
                             builder: (context) {
                               return CupertinoAlertDialog(
-                                title: Text('Empty'),
-                                content: Text('Name Field is Empty'),
+                                title: const Text('Empty'),
+                                content: const Text('Name Field is Empty'),
                                 actions: [
                                   CupertinoDialogAction(
                                     child: const Text('Yes'),
@@ -113,9 +114,9 @@ class _FirstScreenState extends State<FirstScreen> {
                             context: context,
                             builder: (context) {
                               return CupertinoAlertDialog(
-                                title: Text('Empty'),
+                                title: const Text('Empty'),
                                 content: Column(
-                                  children: [
+                                  children: const [
                                     Text('Palindrome Field is Empty'),
                                     Text(
                                         'or Palindrome Filed less than 3 character'),
@@ -160,16 +161,14 @@ class _FirstScreenState extends State<FirstScreen> {
                               checkPalindrome(palindromeController.text);
                         });
                       }
-                      // print(checkPalindrome(palindromeController.text));
-                      print(palindromeController.text);
                     },
                   ),
                 ),
-                SizedBox(height: 15.0),
+                const SizedBox(height: 15.0),
                 SizedBox(
                   width: double.infinity,
                   child: CupertinoButton.filled(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                     onPressed: isPalindrome
                         ? () {
                             Navigator.push(context,
@@ -180,7 +179,7 @@ class _FirstScreenState extends State<FirstScreen> {
                             isPalindrome = false;
                           }
                         : null,
-                    child: Text("NEXT"),
+                    child: const Text("NEXT"),
                     disabledColor: CupertinoColors.systemGrey,
                   ),
                 ),

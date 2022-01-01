@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CupertinoApp(
-      title: 'Flutter Demo',
+      title: 'Android Test',
       theme: CupertinoThemeData(
         primaryColor: Color(0xFF2B637B),
       ),
