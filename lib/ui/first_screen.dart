@@ -1,4 +1,4 @@
-import 'package:android_dev_test/second_screen.dart';
+import 'package:android_dev_test/ui/second_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -89,28 +89,78 @@ class _FirstScreenState extends State<FirstScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     child: Text("CHECK"),
                     onPressed: () {
-                      showCupertinoDialog<void>(
-                        context: context,
-                        builder: (BuildContext context) => CupertinoAlertDialog(
-                          title: const Text('Alert'),
-                          content: Text(isPalindrome
-                              ? "is palindrome"
-                              : "not palindrome"),
-                          actions: [
-                            CupertinoDialogAction(
-                              child: const Text('Yes'),
-                              isDestructiveAction: !isPalindrome,
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                      setState(() {
-                        isPalindrome =
-                            checkPalindrome(palindromeController.text);
-                      });
+                      if (nameController.text.isEmpty) {
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                title: Text('Empty'),
+                                content: Text('Name Field is Empty'),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: const Text('Yes'),
+                                    isDestructiveAction: true,
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            });
+                      } else if (palindromeController.text.isEmpty ||
+                          palindromeController.text.length < 5) {
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                title: Text('Empty'),
+                                content: Column(
+                                  children: [
+                                    Text('Palindrome Field is Empty'),
+                                    Text(
+                                        'or Palindrome Filed less than 5 character'),
+                                  ],
+                                ),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    child: const Text('Yes'),
+                                    isDestructiveAction: true,
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            });
+                        setState(() {
+                          isPalindrome =
+                              checkPalindrome(palindromeController.text);
+                        });
+                      } else {
+                        showCupertinoDialog<void>(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              CupertinoAlertDialog(
+                            title: const Text('Palindrome'),
+                            content: Text(isPalindrome
+                                ? "is palindrome"
+                                : "not palindrome"),
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text('Yes'),
+                                isDestructiveAction: !isPalindrome,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                        setState(() {
+                          isPalindrome =
+                              checkPalindrome(palindromeController.text);
+                        });
+                      }
                       // print(checkPalindrome(palindromeController.text));
                       print(palindromeController.text);
                     },

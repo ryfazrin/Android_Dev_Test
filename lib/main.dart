@@ -1,4 +1,4 @@
-import 'package:android_dev_test/first_screen.dart';
+import 'package:android_dev_test/ui/first_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
