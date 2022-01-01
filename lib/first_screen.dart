@@ -28,18 +28,6 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // enableButton() {
-    //   setState(() {
-    //     isPalindrome = true;
-    //   });
-    // }
-    //
-    // disableButton() {
-    //   setState(() {
-    //     isPalindrome = false;
-    //   });
-    // }
-
     bool checkPalindrome(String inputString) {
       String textFilter = inputString.replaceAll(' ', '');
       for (int i = 0; i < textFilter.length ~/ 2; i++) {
@@ -101,6 +89,24 @@ class _FirstScreenState extends State<FirstScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     child: Text("CHECK"),
                     onPressed: () {
+                      showCupertinoDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) => CupertinoAlertDialog(
+                          title: const Text('Alert'),
+                          content: Text(isPalindrome
+                              ? "is palindrome"
+                              : "not palindrome"),
+                          actions: [
+                            CupertinoDialogAction(
+                              child: const Text('Yes'),
+                              isDestructiveAction: !isPalindrome,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
                       setState(() {
                         isPalindrome =
                             checkPalindrome(palindromeController.text);
@@ -122,85 +128,18 @@ class _FirstScreenState extends State<FirstScreen> {
                               return SecondScreen(
                                   username: nameController.text);
                             }));
+                            isPalindrome = false;
                           }
                         : null,
                     child: Text("NEXT"),
                     disabledColor: CupertinoColors.systemGrey,
                   ),
                 ),
-                // ButtonCheckPalindrome(
-                //   username: nameController.text,
-                //   textPalindrome: palindromeController.text,
-                // ),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-}
-
-class ButtonCheckPalindrome extends StatefulWidget {
-  final String username;
-  final String textPalindrome;
-
-  const ButtonCheckPalindrome(
-      {Key? key, required this.username, required this.textPalindrome})
-      : super(key: key);
-
-  @override
-  _ButtonCheckPalindromeState createState() => _ButtonCheckPalindromeState();
-}
-
-class _ButtonCheckPalindromeState extends State<ButtonCheckPalindrome> {
-  bool isPalindrome = false;
-
-  bool checkPalindrome(String inputString) {
-    String textFilter = inputString.replaceAll(' ', '');
-    for (int i = 0; i < textFilter.length ~/ 2; i++) {
-      if (textFilter[i] != textFilter[textFilter.length - i - 1]) return false;
-    }
-    return true;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          child: CupertinoButton.filled(
-            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-            child: Text("CHECK"),
-            onPressed: () {
-              // setState(() {
-              //   isPalindrome = checkPalindrome(widget.textPalindrome);
-              // });
-              print(checkPalindrome(widget.textPalindrome));
-              print(widget.textPalindrome);
-            },
-          ),
-        ),
-        SizedBox(height: 15.0),
-        isPalindrome ? Text("benar") : Text("salah"),
-        SizedBox(
-          width: double.infinity,
-          child: CupertinoButton.filled(
-            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-            onPressed: isPalindrome
-                ? () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return SecondScreen(username: widget.username);
-                    }));
-                  }
-                : null,
-            child: Text("NEXT"),
-            disabledColor: CupertinoColors.systemGrey,
-          ),
-        ),
-      ],
     );
   }
 }
