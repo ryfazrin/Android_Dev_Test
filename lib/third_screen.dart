@@ -4,40 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ThirdScreen extends StatefulWidget {
+class ThirdScreen extends StatelessWidget {
   const ThirdScreen({Key? key}) : super(key: key);
-
-  @override
-  State<ThirdScreen> createState() => _ThirdScreenState();
-}
-
-class _ThirdScreenState extends State<ThirdScreen> {
-  late List dataUsers;
-  late ScrollController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = ScrollController()..addListener(_scrollListener);
-  }
-
-  @override
-  void dispose() {
-    controller.removeListener(_scrollListener);
-    super.dispose();
-  }
-
-  void _scrollListener() {
-    print(controller.position.extentAfter);
-    if (controller.position.extentAfter < 500) {
-      setState(() {
-        Provider.of<UsersProvider>(context, listen: false).fetchAllUser(2);
-        print(Provider.of<UsersProvider>(context, listen: false).result.data);
-        dataUsers.addAll(
-            Provider.of<UsersProvider>(context, listen: false).result.data);
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,20 +19,14 @@ class _ThirdScreenState extends State<ThirdScreen> {
         create: (_) => UsersProvider(apiService: ApiService()),
         child: SafeArea(
           child: Consumer<UsersProvider>(builder: (context, state, _) {
-            dataUsers = state.result.data;
-
             if (state.state == ResultState.Loading) {
               return Center(child: CircularProgressIndicator());
             } else if (state.state == ResultState.HasData) {
               return CustomScrollView(
-                controller: controller,
                 slivers: [
                   CupertinoSliverRefreshControl(
                     onRefresh: () async {
                       await Future<void>.delayed(Duration(milliseconds: 1000));
-                      setState(() {
-                        dataUsers;
-                      });
                     },
                   ),
                   // padding: const EdgeInsets.symmetric(
@@ -72,7 +34,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
-                        var user = dataUsers[index];
+                        var user = state.result.data[index];
                         return CupertinoListTile(
                           leading: ClipOval(
                             child: Image.network(

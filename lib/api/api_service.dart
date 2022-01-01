@@ -6,9 +6,9 @@ import 'package:http/http.dart' as http;
 class ApiService {
   static final String _baseUrl = 'https://reqres.in/api/users';
 
-  Future<UserResult> getUser(int page) async {
+  Future<UserResult> getUser() async {
     final response = await http
-        .get(Uri.parse(_baseUrl + '?' + 'page=$page' + '&' + 'per_page=10'));
+        .get(Uri.parse(_baseUrl + '?' + 'page=1' + '&' + 'per_page=10'));
     if (response.statusCode == 200) {
       return UserResult.fromJson(json.decode(response.body));
     } else {

@@ -8,7 +8,7 @@ class UsersProvider extends ChangeNotifier {
   late final ApiService apiService;
 
   UsersProvider({required this.apiService}) {
-    fetchAllUser(1);
+    _fetchAllUser();
   }
 
   late UserResult _userResult;
@@ -23,11 +23,11 @@ class UsersProvider extends ChangeNotifier {
 
   ResultState get state => _state;
 
-  Future<dynamic> fetchAllUser(int page) async {
+  Future<dynamic> _fetchAllUser() async {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final user = await apiService.getUser(page);
+      final user = await apiService.getUser();
       if (user.data.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();
