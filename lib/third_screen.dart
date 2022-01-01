@@ -13,7 +13,6 @@ class ThirdScreen extends StatelessWidget {
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           'Third Screen',
-          // style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
         ),
       ),
       child: ChangeNotifierProvider<UsersProvider>(
@@ -23,20 +22,23 @@ class ThirdScreen extends StatelessWidget {
             if (state.state == ResultState.Loading) {
               return Center(child: CircularProgressIndicator());
             } else if (state.state == ResultState.HasData) {
-              return CupertinoScrollbar(
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 15.0, horizontal: 20.0),
                 child: ListView.builder(
                   itemCount: state.result.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     var user = state.result.data[index];
                     return CupertinoListTile(
-                      leading: Image.network(
-                        user.avatar,
-                        width: 100,
-                        height: 100,
+                      leading: ClipOval(
+                        child: Image.network(
+                          user.avatar,
+                          width: 100,
+                          height: 100,
+                        ),
                       ),
-                      title: user.firstName + user.lastName,
+                      title: '${user.firstName} ${user.lastName}',
                       subtitle: user.email,
-                      trailing: Text('trailing'),
                       onTap: () {
                         Navigator.pop(
                             context, '${user.firstName} ${user.lastName}');
@@ -63,7 +65,6 @@ class CupertinoListTile extends StatefulWidget {
   final Widget leading;
   final String title;
   final String subtitle;
-  final Widget trailing;
   final Function() onTap;
 
   const CupertinoListTile(
@@ -71,7 +72,6 @@ class CupertinoListTile extends StatefulWidget {
       required this.leading,
       required this.title,
       required this.subtitle,
-      required this.trailing,
       required this.onTap})
       : super(key: key);
 
@@ -85,6 +85,7 @@ class _StatefulStateCupertino extends State<CupertinoListTile> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
+        padding: EdgeInsets.all(18.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -108,7 +109,6 @@ class _StatefulStateCupertino extends State<CupertinoListTile> {
                 ),
               ],
             ),
-            widget.trailing,
           ],
         ),
       ),
