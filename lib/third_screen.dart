@@ -22,30 +22,39 @@ class ThirdScreen extends StatelessWidget {
             if (state.state == ResultState.Loading) {
               return Center(child: CircularProgressIndicator());
             } else if (state.state == ResultState.HasData) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 15.0, horizontal: 20.0),
-                child: ListView.builder(
-                  itemCount: state.result.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var user = state.result.data[index];
-                    return CupertinoListTile(
-                      leading: ClipOval(
-                        child: Image.network(
-                          user.avatar,
-                          width: 100,
-                          height: 100,
-                        ),
-                      ),
-                      title: '${user.firstName} ${user.lastName}',
-                      subtitle: user.email,
-                      onTap: () {
-                        Navigator.pop(
-                            context, '${user.firstName} ${user.lastName}');
+              return CustomScrollView(
+                slivers: [
+                  CupertinoSliverRefreshControl(
+                    onRefresh: () async {
+                      await Future<void>.delayed(Duration(milliseconds: 1000));
+                    },
+                  ),
+                  // padding: const EdgeInsets.symmetric(
+                  //     vertical: 15.0, horizontal: 20.0),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        var user = state.result.data[index];
+                        return CupertinoListTile(
+                          leading: ClipOval(
+                            child: Image.network(
+                              user.avatar,
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
+                          title: '${user.firstName} ${user.lastName}',
+                          subtitle: user.email,
+                          onTap: () {
+                            Navigator.pop(
+                                context, '${user.firstName} ${user.lastName}');
+                          },
+                        );
                       },
-                    );
-                  },
-                ),
+                      childCount: state.result.data.length,
+                    ),
+                  ),
+                ],
               );
             } else if (state.state == ResultState.NoData) {
               return Center(child: Text(state.message));
