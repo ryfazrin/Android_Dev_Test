@@ -1,8 +1,10 @@
+import 'package:android_dev_test/third_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SecondScreen extends StatelessWidget {
-  const SecondScreen({Key? key}) : super(key: key);
+  final String username;
+  const SecondScreen({Key? key, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +32,12 @@ class SecondScreen extends StatelessWidget {
                         fontSize: 12,
                       ),
                     ),
-                    Text("John Doe",
-                        style: CupertinoTheme.of(context)
-                            .textTheme
-                            .navTitleTextStyle),
+                    Text(
+                      username,
+                      style: CupertinoTheme.of(context)
+                          .textTheme
+                          .navTitleTextStyle,
+                    ),
                   ],
                 ),
               ),
@@ -49,7 +53,12 @@ class SecondScreen extends StatelessWidget {
                 width: double.infinity,
                 child: CupertinoButton.filled(
                   borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return ThirdScreen();
+                    }));
+                  },
                   child: Text("Choose a User"),
                 ),
               ),
