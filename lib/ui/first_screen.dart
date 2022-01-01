@@ -108,7 +108,7 @@ class _FirstScreenState extends State<FirstScreen> {
                               );
                             });
                       } else if (palindromeController.text.isEmpty ||
-                          palindromeController.text.length < 5) {
+                          palindromeController.text.length < 3) {
                         showCupertinoDialog(
                             context: context,
                             builder: (context) {
@@ -118,7 +118,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                   children: [
                                     Text('Palindrome Field is Empty'),
                                     Text(
-                                        'or Palindrome Filed less than 5 character'),
+                                        'or Palindrome Filed less than 3 character'),
                                   ],
                                 ),
                                 actions: [
@@ -133,8 +133,7 @@ class _FirstScreenState extends State<FirstScreen> {
                               );
                             });
                         setState(() {
-                          isPalindrome =
-                              checkPalindrome(palindromeController.text);
+                          isPalindrome = false;
                         });
                       } else {
                         showCupertinoDialog<void>(
