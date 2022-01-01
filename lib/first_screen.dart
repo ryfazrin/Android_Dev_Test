@@ -10,11 +10,24 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
+  bool isPalindrome = false;
+  final nameController = TextEditingController();
+  final palindromeController = TextEditingController();
+
+  @override
+  void initState() {
+    isPalindrome = false;
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    palindromeController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final nameController = TextEditingController();
-    final palindromeController = TextEditingController();
-
     // enableButton() {
     //   setState(() {
     //     isPalindrome = true;
@@ -27,17 +40,14 @@ class _FirstScreenState extends State<FirstScreen> {
     //   });
     // }
 
-    // @override
-    // void initState() {
-    //   isPalindrome = false;
-    // }
-    //
-    // @override
-    // void dispose() {
-    //   nameController.dispose();
-    //   palindromeController.dispose();
-    //   super.dispose();
-    // }
+    bool checkPalindrome(String inputString) {
+      String textFilter = inputString.replaceAll(' ', '');
+      for (int i = 0; i < textFilter.length ~/ 2; i++) {
+        if (textFilter[i] != textFilter[textFilter.length - i - 1])
+          return false;
+      }
+      return true;
+    }
 
     return CupertinoPageScaffold(
       child: Container(
@@ -85,9 +95,43 @@ class _FirstScreenState extends State<FirstScreen> {
                   ),
                 ),
                 SizedBox(height: 45.0),
-                ButtonCheckPalindrome(
-                  textPalindrome: palindromeController.text,
+                SizedBox(
+                  width: double.infinity,
+                  child: CupertinoButton.filled(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                    child: Text("CHECK"),
+                    onPressed: () {
+                      setState(() {
+                        isPalindrome =
+                            checkPalindrome(palindromeController.text);
+                      });
+                      // print(checkPalindrome(palindromeController.text));
+                      print(palindromeController.text);
+                    },
+                  ),
                 ),
+                SizedBox(height: 15.0),
+                SizedBox(
+                  width: double.infinity,
+                  child: CupertinoButton.filled(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                    onPressed: isPalindrome
+                        ? () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return SecondScreen(
+                                  username: nameController.text);
+                            }));
+                          }
+                        : null,
+                    child: Text("NEXT"),
+                    disabledColor: CupertinoColors.systemGrey,
+                  ),
+                ),
+                // ButtonCheckPalindrome(
+                //   username: nameController.text,
+                //   textPalindrome: palindromeController.text,
+                // ),
               ],
             ),
           ),
@@ -98,8 +142,11 @@ class _FirstScreenState extends State<FirstScreen> {
 }
 
 class ButtonCheckPalindrome extends StatefulWidget {
+  final String username;
   final String textPalindrome;
-  const ButtonCheckPalindrome({Key? key, required this.textPalindrome})
+
+  const ButtonCheckPalindrome(
+      {Key? key, required this.username, required this.textPalindrome})
       : super(key: key);
 
   @override
@@ -111,7 +158,6 @@ class _ButtonCheckPalindromeState extends State<ButtonCheckPalindrome> {
 
   bool checkPalindrome(String inputString) {
     String textFilter = inputString.replaceAll(' ', '');
-    print(textFilter);
     for (int i = 0; i < textFilter.length ~/ 2; i++) {
       if (textFilter[i] != textFilter[textFilter.length - i - 1]) return false;
     }
@@ -128,10 +174,11 @@ class _ButtonCheckPalindromeState extends State<ButtonCheckPalindrome> {
             borderRadius: BorderRadius.all(Radius.circular(12.0)),
             child: Text("CHECK"),
             onPressed: () {
-              setState(() {
-                isPalindrome = checkPalindrome(widget.textPalindrome);
-              });
-              // print(checkPalindrome(palindromeController.text));
+              // setState(() {
+              //   isPalindrome = checkPalindrome(widget.textPalindrome);
+              // });
+              print(checkPalindrome(widget.textPalindrome));
+              print(widget.textPalindrome);
             },
           ),
         ),
@@ -141,15 +188,11 @@ class _ButtonCheckPalindromeState extends State<ButtonCheckPalindrome> {
           width: double.infinity,
           child: CupertinoButton.filled(
             borderRadius: BorderRadius.all(Radius.circular(12.0)),
-            // onPressed: () {
-            //   isPalindrome ? print("benar") : print("salah");
-            //   // print(isPalindrome);
-            // },
             onPressed: isPalindrome
                 ? () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return SecondScreen();
+                      return SecondScreen(username: widget.username);
                     }));
                   }
                 : null,
