@@ -5,8 +5,37 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ThirdScreen extends StatelessWidget {
+class ThirdScreen extends StatefulWidget {
   const ThirdScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ThirdScreen> createState() => _ThirdScreenState();
+}
+
+class _ThirdScreenState extends State<ThirdScreen> {
+  final UsersProvider userProvider = UsersProvider(apiService: ApiService());
+  late ScrollController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = ScrollController()..addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_scrollListener);
+    controller.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    var maxScroll = controller.position.maxScrollExtent;
+    var currentPosition = controller.position.pixels;
+    if (currentPosition == maxScroll) {
+      userProvider.loadNextPage();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,23 +43,23 @@ class ThirdScreen extends StatelessWidget {
       navigationBar: const CupertinoNavigationBar(
         middle: Text('Third Screen'),
       ),
-      child: ChangeNotifierProvider<UsersProvider>(
-        create: (_) => UsersProvider(apiService: ApiService()),
+      child: ChangeNotifierProvider<UsersProvider>.value(
+        value: userProvider,
         child: SafeArea(
           child: Consumer<UsersProvider>(builder: (context, state, _) {
             if (state.state == ResultState.Loading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state.state == ResultState.HasData) {
               return CustomScrollView(
+                controller: controller,
                 slivers: [
                   CupertinoSliverRefreshControl(
                     onRefresh: () async {
                       await Future<void>.delayed(
                           const Duration(milliseconds: 1000));
+                      setState(() {});
                     },
                   ),
-                  // padding: const EdgeInsets.symmetric(
-                  //     vertical: 15.0, horizontal: 20.0),
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {

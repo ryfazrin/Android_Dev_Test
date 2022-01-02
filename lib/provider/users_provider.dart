@@ -8,26 +8,29 @@ class UsersProvider extends ChangeNotifier {
   late final ApiService apiService;
 
   UsersProvider({required this.apiService}) {
-    _fetchAllUser();
+    loadNextPage();
   }
 
   late UserResult _userResult;
-
   late ResultState _state;
-
+  int currentPage = 1;
   String _message = '';
 
   String get message => _message;
-
   UserResult get result => _userResult;
-
   ResultState get state => _state;
 
-  Future<dynamic> _fetchAllUser() async {
+  loadNextPage() async {
+    await fetchAllUser(currentPage);
+    currentPage++;
+    notifyListeners();
+  }
+
+  Future<dynamic> fetchAllUser(int currentPage) async {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final user = await apiService.getUser();
+      final user = await apiService.getUser(currentPage);
       if (user.data.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();
