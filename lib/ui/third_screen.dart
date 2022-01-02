@@ -57,7 +57,9 @@ class _ThirdScreenState extends State<ThirdScreen> {
                     onRefresh: () async {
                       await Future<void>.delayed(
                           const Duration(milliseconds: 1000));
-                      setState(() {});
+                      setState(() {
+                        userProvider.fetchAllUser(1);
+                      });
                     },
                   ),
                   SliverList(
